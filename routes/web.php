@@ -6,7 +6,11 @@ use App\Models\Job;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $jobs = Job::all();
+
+    $secondJob = $jobs->get(0);
+
+    dd($secondJob->id);
 });
 
 Route::get('/jobs', function () {
