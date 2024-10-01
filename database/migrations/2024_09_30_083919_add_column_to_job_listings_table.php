@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('job_listings', function (Blueprint $table) {
+            $table->foreignIdFor(\App\Models\Employer::class);
             $table->string('title');
             $table->string('salary');
         });
