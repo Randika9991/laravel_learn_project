@@ -11,16 +11,18 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    protected $guarded = [];
     /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+//    protected $fillable = [
+//        'first_name',
+//        'last_name',
+//        'email',
+//        'password',
+//    ];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -31,6 +33,12 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function isAdmin()
+    {
+        // Assuming there's an `is_admin` column or a role-checking mechanism
+        return $this->is_admin; // Or however you track admin status
+    }
 
     /**
      * Get the attributes that should be cast.
