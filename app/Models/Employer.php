@@ -10,16 +10,11 @@ class Employer extends Model
 {
     use HasFactory;
 
-//    protected $table = 'employers';
-//
-//    protected $fillable = [
-//        'name',
-//    ];
-
-    public function jobs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function jobs()
     {
         return $this->hasMany(Job::class);
     }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

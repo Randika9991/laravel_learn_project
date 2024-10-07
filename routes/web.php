@@ -1,14 +1,11 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
-use App\Models\Job;
+use Illuminate\Support\Facades\Route;
 
-
-use App\Http\Controllers\JobController;
 Route::view('/', 'welcome');
-//index
 Route::view('/contact', 'contact');
 
 Route::get('/jobs', [JobController::class, 'index']);
@@ -27,7 +24,6 @@ Route::delete('/jobs/{job}', [JobController::class, 'destroy']);
 Route::get('/register', [RegisteredUserController::class, 'create']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
-//session
 Route::get('/login', [SessionController::class, 'create'])->name('login');
 Route::post('/login', [SessionController::class, 'store']);
 Route::post('/logout', [SessionController::class, 'destroy']);
