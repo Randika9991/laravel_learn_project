@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\JobRepositoryInterface;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -9,23 +10,23 @@ use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
+
+    protected $jobRepository;
+
+    public function __construct(JobRepositoryInterface $jobRepository)
+    {
+        $this->jobRepository = $jobRepository;
+    }
+
     public function index()
     {
-        $jobs = Job::with('employer')->latest()->simplePaginate(3);
-
-        return view('jobs.index', [
-            'jobs' => $jobs
-        ]);
+        $jobs = $this->jobRepository->getAllJobs();
+        return view('jobs.index', compact('jobs'));
     }
 
     public function create()
     {
         return view('jobs.create');
-    }
-
-    public function show(Job $job)
-    {
-        return view('jobs.show', ['job' => $job]);
     }
 
     public function store()
@@ -35,7 +36,7 @@ class JobController extends Controller
             'salary' => ['required']
         ]);
 
-        Job::create([
+        $this->jobRepository->createJob([
             'title' => request('title'),
             'salary' => request('salary'),
             'employer_id' => 1
@@ -58,9 +59,9 @@ class JobController extends Controller
             'salary' => ['required']
         ]);
 
-        $job->update([
+        $this->jobRepository->updateJob($job, [
             'title' => request('title'),
-            'salary' => request('salary'),
+            'salary' => request('salary')
         ]);
 
         return redirect('/jobs/' . $job->id);
@@ -69,9 +70,27 @@ class JobController extends Controller
     public function destroy(Job $job)
     {
         Gate::authorize('edit-job', $job);
-
-        $job->delete();
-
+        $this->jobRepository->deleteJob($job);
         return redirect('/jobs');
     }
+
+    public function show(Job $job)
+    {
+        return view('jobs.show', ['job' => $job]);
+    }
 }
+
+
+//    public function index()
+//    {
+//        $jobs = Job::with('employer')->latest()->simplePaginate(3);
+//
+//        return view('jobs.index', [
+//            'jobs' => $jobs
+//        ]);
+//    }
+//
+//    public function create()
+//    {
+//        return view('jobs.create');
+//    }

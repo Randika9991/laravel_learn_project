@@ -2,6 +2,8 @@
 
 return [
 
+
+
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -123,4 +125,8 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'Providers' => [
+        // Other Service Providers
+        App\Providers\RepositoryServiceProvider::class,
+    ],
 ];
